@@ -86,6 +86,8 @@ buffer_size(FILE *fp)
 
 #elif defined(_IONBF)
 
+/*
+
 #ifdef _LP64
 #define _flag __pad[4]
 #define _ptr __pad[1]
@@ -110,7 +112,40 @@ buffer_size(FILE *fp)
 #ifdef _LP64
 	return(fp->_base - fp->_ptr);
 #else
-	return(BUFSIZ);	/* just a guess */
+	return(BUFSIZ);	*/
+/* just a guess *//*
+
+#endif
+}
+
+#else
+
+#error unknown stdio implementation!
+
+#endif
+
+*/
+
+
+int
+is_unbuffered(FILE *fp)
+{
+  return(fp->_flags & _IONBF);
+}
+
+int
+is_linebuffered(FILE *fp)
+{
+  return(fp->_flags & _IOLBF);
+}
+
+int
+buffer_size(FILE *fp)
+{
+#ifdef _LP64
+  return(fp->_IO_buf_end - fp->_IO_buf_base);
+#else
+  return(BUFSIZ);    /* just a guess */
 #endif
 }
 
